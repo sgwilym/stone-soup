@@ -7,15 +7,30 @@
   "homepage": "https://github.com/earthstar-project/stone-soup",
   "license": "AGPL-3.0",
   "main": "build/index.js",
+  "type": "module",
   "types": "build/index.d.ts",
   "browser": {
     "./build/index.js": "./build/index.browser.js",
     "./build/crypto-driver-node.js": false,
     "tap": "tape"
   },
+  "exports": {
+    ".": {
+      "node": {
+        "require": "./dist/earthstar.cjs",
+        "import": "./dist/earthstar.mjs"
+      },
+      "default": "./dist/earthstar.js"
+    },
+    "./browser": "./dist/browser/browser.js",
+    "./node": {
+      "require": "./dist/node/node.cjs",
+      "default": "./dist/node/node.mjs"
+    }
+  },
   "scripts": {
     "clean": "rm -rf build coverage .nyc_output",
-    "build": "tsc",
+    "build": "rm -rf dist && node ./scripts/build.mjs",
     "clean-build-test": "yarn clean && yarn build && yarn test",
     "start": "node build/example-app.js",
     "browserify": "mkdir -p browserify-tests && browserify build/test/*.test.js build/test/browser-run.js > browserify-tests/bundle.js",
@@ -49,6 +64,7 @@
     "browser-run": "^10.1.0",
     "browserify": "^17.0.0",
     "depchart": "^1.2.0",
+    "esbuild": "^0.11.13",
     "onchange": "^7.1.0",
     "tap": "^14.11.0",
     "tap-spec": "^5.0.0",
