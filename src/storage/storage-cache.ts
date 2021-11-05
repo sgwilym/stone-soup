@@ -84,6 +84,7 @@ function sortAndLimit(query: Query, docs: Doc[]) {
 }
 
 export class StorageCache {
+  version = 0;
   _storage: IStorageAsync;
 
   _docCache = new Map<
@@ -397,6 +398,7 @@ export class StorageCache {
   // SUBSCRIBE
 
   _fireOnCacheUpdateds() {
+    this.version++;
     return Promise.all(
       Array.from(this._onCacheUpdatedCallbacks.values()).map((callback) => {
         return callback();
